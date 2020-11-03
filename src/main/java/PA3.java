@@ -195,6 +195,10 @@ private GLUT glut;
         case 'r' : 
                    viewing_quaternion.reset(); 
                    break;
+        case 'F' :
+        case 'f' :
+//          Vivarium.addFood();
+          break;
         default :
           break;
     }

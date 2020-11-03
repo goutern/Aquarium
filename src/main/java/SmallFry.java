@@ -101,7 +101,7 @@ public class SmallFry {
                 continue;
             }
 
-//            System.out.println(distance(this.coord, smallFry.coord));
+
             if (collisionDetection(tempCord, smallFry.coord, 0.25f)) {
                 change = potentialFunction(this.coord, smallFry.coord, -.01f);
                 delta.x += change[0];
@@ -196,7 +196,7 @@ public class SmallFry {
 
         coord.z += zSpeed + delta.z;
 
-        coord.y += ySpeed + delta.y;
+//        coord.y += ySpeed + delta.y;
 
         float hyp = (float) Math.sqrt(Math.pow(xSpeed + delta.x, 2) + Math.pow(zSpeed + delta.z, 2));
         float hypY = (float) Math.sqrt(Math.pow(xSpeed + delta.x + zSpeed + delta.z, 2) + Math.pow(ySpeed + delta.y, 2));

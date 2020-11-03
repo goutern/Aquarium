@@ -158,7 +158,7 @@ public class Predator {
 
         coord.x += xSpeed + delta.x;
         coord.z += zSpeed + delta.z;
-        coord.y += ySpeed + delta.y;
+//        coord.y += ySpeed + delta.y;
 
 
         float hyp = (float) Math.sqrt(Math.pow(xSpeed + delta.x, 2) + Math.pow(zSpeed + delta.z, 2));

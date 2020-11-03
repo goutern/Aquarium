@@ -5,6 +5,7 @@ import com.jogamp.opengl.util.*;
 
 import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
+import java.util.Random;
 
 public class Vivarium
 {
@@ -12,6 +13,8 @@ public class Vivarium
   public static ArrayList<SmallFry> smallFries = new ArrayList<SmallFry>();
   public static Predator predator;
   public static ArrayList<Food> food = new ArrayList<Food>();
+  private static Random random = new Random(42);
+
 
   public Vivarium()
   {
@@ -23,14 +26,14 @@ public class Vivarium
     predator.predator = true;
     smallFries.add(smallFry);
 //    smallFries.add(mediumFry);
-////    smallFries.add(new SmallFry(.75f, -.5f, 0 , -.5f));
-////    smallFries.add(new SmallFry(.75f, .5f, 0 , -.5f));
-//    smallFries.add(new SmallFry(.75f, -.5f, 0 , .5f));
-////    smallFries.add(new SmallFry(.75f, 1f, 0 , 1f));
+    smallFries.add(new SmallFry(.75f, -.5f, 0 , -.5f));
+    smallFries.add(new SmallFry(.75f, .5f, 0 , -.5f));
+    smallFries.add(new SmallFry(.75f, -.5f, 0 , .5f));
+    smallFries.add(new SmallFry(.75f, 1f, 0 , 1f));
     smallFries.add(new SmallFry(.75f, 1f, 0 , -1f));
     smallFries.add(new SmallFry(.75f, -1f, 0 , 1f));
     smallFries.add(new SmallFry(.75f, -1f, 0 , -1f));
-//    food.add(new Food(.75f, 0, 0, 1));
+
 
   }
 
