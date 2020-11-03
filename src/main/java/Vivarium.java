@@ -2,31 +2,36 @@
 
 import javax.media.opengl.*;
 import com.jogamp.opengl.util.*;
+
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
 public class Vivarium
 {
   private Tank tank;
   public static ArrayList<SmallFry> smallFries = new ArrayList<SmallFry>();
-  public static SmallFry predator;
+  public static Predator predator;
+  public static ArrayList<Food> food = new ArrayList<Food>();
 
   public Vivarium()
   {
     tank = new Tank( 4.0f, 4.0f, 4.0f );
 
     SmallFry smallFry = new SmallFry( .75f, 0, 0, 0 );
-    SmallFry mediumFry = new SmallFry( .75f, .5f, 0, 0.5f );
-    predator = new SmallFry(1, 1, 0 ,1);
+//    SmallFry mediumFry = new SmallFry( .75f, .5f, 0, 0.5f );
+    predator = new Predator(1f, 1.5f, 0 ,1.5f);
     predator.predator = true;
     smallFries.add(smallFry);
-    smallFries.add(mediumFry);
-    smallFries.add(new SmallFry(.75f, -.5f, 0 , -.5f));
-    smallFries.add(new SmallFry(.75f, .5f, 0 , -.5f));
-    smallFries.add(new SmallFry(.75f, -.5f, 0 , .5f));
-//    smallFries.add(new SmallFry(.75f, 1f, 0 , 1f));
+//    smallFries.add(mediumFry);
+////    smallFries.add(new SmallFry(.75f, -.5f, 0 , -.5f));
+////    smallFries.add(new SmallFry(.75f, .5f, 0 , -.5f));
+//    smallFries.add(new SmallFry(.75f, -.5f, 0 , .5f));
+////    smallFries.add(new SmallFry(.75f, 1f, 0 , 1f));
     smallFries.add(new SmallFry(.75f, 1f, 0 , -1f));
     smallFries.add(new SmallFry(.75f, -1f, 0 , 1f));
     smallFries.add(new SmallFry(.75f, -1f, 0 , -1f));
+//    food.add(new Food(.75f, 0, 0, 1));
+
   }
 
   public void init( GL2 gl )
@@ -34,6 +39,11 @@ public class Vivarium
     tank.init( gl );
     for(SmallFry smallFry :smallFries){
       smallFry.init(gl);
+    }
+    for(Food food : food){
+      if(!food.eaten){
+        food.init(gl);
+      }
     }
     predator.init(gl);
   }
@@ -46,6 +56,11 @@ public class Vivarium
         smallFry.update(gl);
       }
     }
+    for(Food food : food){
+      if(!food.eaten){
+        food.update(gl);
+      }
+    }
     predator.update(gl);
   }
 
@@ -55,6 +70,11 @@ public class Vivarium
     for(SmallFry smallFry :smallFries){
       if(smallFry.alive){
         smallFry.draw(gl);
+      }
+    }
+    for(Food food : food){
+      if(!food.eaten){
+        food.draw(gl);
       }
     }
     predator.draw(gl);
