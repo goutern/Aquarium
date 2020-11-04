@@ -64,7 +64,7 @@ public class Food {
 
         Coord delta = new Coord();
         Coord change = new Coord();
-        if (collisionDetection(coord, Vivarium.predator.coord, 0.3f)) {
+        if (collisionDetection(coord, Vivarium.predator.coord, 0.2f)) {
             eaten = true;
         }
         for (SmallFry smallFry : Vivarium.smallFries) {

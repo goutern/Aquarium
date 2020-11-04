@@ -13,6 +13,9 @@ public class Predator {
     private float angleDelta = 0.5f;
     private int body;
     private int tail;
+    private int topfin;
+    private int leftfin;
+    private int rightfin;
     private float z;
     private float x;
     private float y;
@@ -70,8 +73,28 @@ public class Predator {
         tail = gl.glGenLists(1);
         gl.glNewList(tail, GL2.GL_COMPILE);
         gl.glPushMatrix();
-        gl.glTranslated(0, 0, scale * -.2);
+        gl.glTranslated(0, 0, scale * -.3);
         gl.glScalef(scale * 0.1f, scale * 0.15f, scale * 0.2f);
+        glut.glutSolidCone(scale * 1, scale * 2, 2, 2);
+        gl.glPopMatrix();
+        gl.glEndList();
+
+        leftfin = gl.glGenLists(1);
+        gl.glNewList(leftfin, GL2.GL_COMPILE);
+        gl.glPushMatrix();
+        gl.glRotatef(-90, 0,1,0);
+        gl.glRotatef(90, 0,0,1);
+        gl.glScalef(scale * 0.1f, scale * 0.1f, scale * 0.1f);
+        glut.glutSolidCone(scale * 1, scale * 2, 2, 2);
+        gl.glPopMatrix();
+        gl.glEndList();
+
+        rightfin = gl.glGenLists(1);
+        gl.glNewList(rightfin, GL2.GL_COMPILE);
+        gl.glPushMatrix();;
+        gl.glRotatef(90, 0,1,0);
+        gl.glRotatef(90, 0,0,1);
+        gl.glScalef(scale * 0.1f, scale * 0.1f, scale * 0.1f);
         glut.glutSolidCone(scale * 1, scale * 2, 2, 2);
         gl.glPopMatrix();
         gl.glEndList();
@@ -262,6 +285,12 @@ public class Predator {
         gl.glPushMatrix();
         gl.glRotatef(tailAngle, 0.0f, 1.0f, 0.0f);
         gl.glCallList(tail);
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glCallList(leftfin);
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glCallList(rightfin);
         gl.glPopMatrix();
         gl.glPopAttrib();
         gl.glPopMatrix();
