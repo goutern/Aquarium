@@ -103,7 +103,7 @@ public class Food {
         gl.glPushMatrix();
         gl.glPushAttrib(GL2.GL_CURRENT_BIT);
         gl.glTranslated(coord.x, coord.y, coord.z);
-        gl.glColor3f(0.85f, 0.55f, 0.20f);
+        gl.glColor3f(0, 1, 0);
         gl.glPushMatrix();
         gl.glCallList(body);
         gl.glPopMatrix();
