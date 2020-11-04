@@ -12,6 +12,9 @@ import java.util.Random;
 // 11/4
 // Main vivarium class
 // simple checks if it should draw food or smallfrys
+// INPUTS: None
+// OUTPUTS: None
+// This class is more of a controller for controlling the state of the aquarium
 public class Vivarium {
     private Tank tank;
     public static ArrayList<SmallFry> smallFries = new ArrayList<SmallFry>();
