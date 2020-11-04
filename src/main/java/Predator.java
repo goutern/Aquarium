@@ -2,7 +2,6 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import java.util.Random;
 
 // Nicholas Goutermout
 // CS 680
@@ -22,8 +21,10 @@ public class Predator {
     private int body;
     private int tail;
 
-    private int leftfin;
-    private int rightfin;
+    private int leftFin;
+    private int rightFin;
+    private int leftEye;
+    private int rightEye;
     public float zSpeed = 0.0005f;
     public float xSpeed = 0.0005f;
     public float ySpeed = 0.0005f;
@@ -69,8 +70,8 @@ public class Predator {
         gl.glPopMatrix();
         gl.glEndList();
 
-        leftfin = gl.glGenLists(1);
-        gl.glNewList(leftfin, GL2.GL_COMPILE);
+        leftFin = gl.glGenLists(1);
+        gl.glNewList(leftFin, GL2.GL_COMPILE);
         gl.glPushMatrix();
         gl.glRotatef(-90, 0, 1, 0);
         gl.glRotatef(90, 0, 0, 1);
@@ -79,13 +80,32 @@ public class Predator {
         gl.glPopMatrix();
         gl.glEndList();
 
-        rightfin = gl.glGenLists(1);
-        gl.glNewList(rightfin, GL2.GL_COMPILE);
+        rightFin = gl.glGenLists(1);
+        gl.glNewList(rightFin, GL2.GL_COMPILE);
         gl.glPushMatrix();
         gl.glRotatef(90, 0, 1, 0);
         gl.glRotatef(90, 0, 0, 1);
         gl.glScalef(scale * 0.1f, scale * 0.1f, scale * 0.1f);
         glut.glutSolidCone(scale * 1, scale * 2, 2, 2);
+        gl.glPopMatrix();
+        gl.glEndList();
+
+        leftEye = gl.glGenLists(1);
+        gl.glNewList(leftEye, GL2.GL_COMPILE);
+        gl.glPushMatrix();
+        gl.glTranslated(-(scale * 0.05), scale * 0.04f, scale * 0.15f);
+        gl.glScalef(0.025f, 0.025f, 0.025f);
+        glut.glutSolidSphere(1, 5, 5);
+        gl.glPopMatrix();
+        gl.glEndList();
+
+
+        rightEye = gl.glGenLists(1);
+        gl.glNewList(rightEye, GL2.GL_COMPILE);
+        gl.glPushMatrix();
+        gl.glTranslated(scale * 0.05, scale * 0.04f, scale * 0.15f);
+        gl.glScalef(0.025f, 0.025f, 0.025f);
+        glut.glutSolidSphere(1, 5, 5);
         gl.glPopMatrix();
         gl.glEndList();
 
@@ -277,10 +297,20 @@ public class Predator {
         gl.glCallList(tail);
         gl.glPopMatrix();
         gl.glPushMatrix();
-        gl.glCallList(leftfin);
+        gl.glRotatef(tailAngle / 2, 0.0f, 0.0f, 1.0f);
+        gl.glCallList(leftFin);
         gl.glPopMatrix();
         gl.glPushMatrix();
-        gl.glCallList(rightfin);
+        gl.glRotatef(-tailAngle / 2, 0.0f, 0.0f, 1.0f);
+        gl.glCallList(rightFin);
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glCallList(leftEye);
+        gl.glPopMatrix();
+        gl.glPushMatrix();
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glCallList(rightEye);
         gl.glPopMatrix();
         gl.glPopAttrib();
         gl.glPopMatrix();
