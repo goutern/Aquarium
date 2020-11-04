@@ -4,63 +4,53 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import java.util.Random;
 
+// Nicholas Goutermout
+// CS 680
+// PS3
+// 11/4
+
+// Creates and manages a simple predator class that chases small fries
+// call init, most inputs are taken care of in base code
+// draw and update is controlled in the Vivarium class
 public class Predator {
-    //  private int fish_object;
+
     private float scale;
     private float tailAngle;
     private float tailDelta;
     private float angle;
-    private float angleDelta = 0.5f;
+    //    private float angleDelta = 0.5f;
     private int body;
     private int tail;
-    private int topfin;
+
     private int leftfin;
     private int rightfin;
-    private float z;
-    private float x;
-    private float y;
-    private float zAccel;
-    private float xAccel;
-    private float yAccel;
     public float zSpeed = 0.0005f;
     public float xSpeed = 0.0005f;
     public float ySpeed = 0.0005f;
-    public boolean xCol = false;
-    public boolean zCol = false;
-    public boolean yCol = false;
     public boolean predator = false;
     private float yAngle = 0.0f;
 
-
-    private float rotationAngle;
-    boolean collision = false;
-
-    private float rotation = 0.0f;
-    private float speed = 0.0f;
-    private Random random = new Random(42);
+    //    boolean collision = false;
+//    private Random random = new Random(42);
     public Coord coord;
     public Coord coordPrime;
+
+    // can be raised to make the predator faster when he detects a fish
     float chasePotential = 0.0008f;
-    float anglex = 0;
 
     public Predator(float scale_, float x, float y, float z) {
         coord = new Coord(x, y, z);
         scale = scale_;
 
-
         tailAngle = 15.0f;
         tailDelta = 2.0f;
-        zAccel = 0.1f;
-        xAccel = 0.1f;
-        yAccel = 0.001f;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-
 
     }
 
+
+    //init and create all the initial body parts
     public void init(GL2 gl) {
+
         GLUT glut = new GLUT();
         body = gl.glGenLists(1);
         gl.glNewList(body, GL2.GL_COMPILE);
@@ -82,8 +72,8 @@ public class Predator {
         leftfin = gl.glGenLists(1);
         gl.glNewList(leftfin, GL2.GL_COMPILE);
         gl.glPushMatrix();
-        gl.glRotatef(-90, 0,1,0);
-        gl.glRotatef(90, 0,0,1);
+        gl.glRotatef(-90, 0, 1, 0);
+        gl.glRotatef(90, 0, 0, 1);
         gl.glScalef(scale * 0.1f, scale * 0.1f, scale * 0.1f);
         glut.glutSolidCone(scale * 1, scale * 2, 2, 2);
         gl.glPopMatrix();
@@ -91,9 +81,9 @@ public class Predator {
 
         rightfin = gl.glGenLists(1);
         gl.glNewList(rightfin, GL2.GL_COMPILE);
-        gl.glPushMatrix();;
-        gl.glRotatef(90, 0,1,0);
-        gl.glRotatef(90, 0,0,1);
+        gl.glPushMatrix();
+        gl.glRotatef(90, 0, 1, 0);
+        gl.glRotatef(90, 0, 0, 1);
         gl.glScalef(scale * 0.1f, scale * 0.1f, scale * 0.1f);
         glut.glutSolidCone(scale * 1, scale * 2, 2, 2);
         gl.glPopMatrix();
@@ -101,6 +91,7 @@ public class Predator {
 
     }
 
+    // simple potential function helper
     private float[] potentialFunction(Coord p, Coord q, float pot) {
         float[] vals = new float[3];
         vals[0] = (float) (2 * (q.x - p.x) * pot);
@@ -112,13 +103,18 @@ public class Predator {
 
     public void update(GL gl) {
 
+        //make the tail flip back and forth
         if (tailAngle >= 15 || tailAngle <= -15) {
             tailDelta = -tailDelta;
         }
+
         tailAngle += tailDelta;
         Coord delta = new Coord();
 
         float[] vals;
+        // check for the small fies chase if near and alive
+        // distance threshold used to get around getting stuck in the middle point
+        // sum up the deltas
         for (SmallFry smallFry : Vivarium.smallFries) {
             if (smallFry.alive) {
                 if (collisionDetection(Vivarium.predator.coord, smallFry.coord, 1f)) {
@@ -130,6 +126,8 @@ public class Predator {
             }
         }
 
+
+        // Get a potential value from the walls and reflect if the predator is too close
         Coord tempCord = new Coord(coord.x + xSpeed, coord.y + ySpeed, coord.z + zSpeed);
         float[][] wallVals = new float[6][3];
         wallVals[0] = potentialFunction(tempCord, new Coord(-1.8, this.coord.y, this.coord.z), -0.01f);
@@ -161,23 +159,22 @@ public class Predator {
         }
 
 
-        if ((coord.x + xSpeed) <= -1.8 || (coord.x + xSpeed) >= 1.8) {
-            collision = true;
+        // left from Y axis attempt
+//        if ((coord.x + xSpeed) <= -1.8 || (coord.x + xSpeed) >= 1.8) {
+//            collision = true;
+//        }
+//
+//        if ((coord.y + ySpeed) <= -1.8 || (coord.y + ySpeed) >= 1.8) {
+//            collision = true;
+//        }
+//
+//        if ((coord.z + zSpeed) <= -1.8 || (coord.z + zSpeed) >= 1.8) {
+//            collision = true;
+//        }
 
-        }
 
-        if ((coord.y + ySpeed) <= -1.8 || (coord.y + ySpeed) >= 1.8) {
-            collision = true;
-        }
-
-        if ((coord.z + zSpeed) <= -1.8 || (coord.z + zSpeed) >= 1.8) {
-            collision = true;
-        }
-
-
+        //get the position before it is updated
         coordPrime = new Coord(coord.x, coord.y, coord.z);
-
-        angleDelta = random.nextFloat() * 10 - 5;
 
         coord.x += xSpeed + delta.x;
         coord.z += zSpeed + delta.z;
@@ -188,12 +185,14 @@ public class Predator {
         float hypY = (float) Math.sqrt(Math.pow(xSpeed + delta.x + zSpeed + delta.z, 2) + Math.pow(ySpeed + delta.y, 2));
 
 
+        // calculate the heading based upon the deltas calculated earlier
         if ((xSpeed + delta.x) < 0) {
             angle = 270 + (float) Math.toDegrees(Math.asin((zSpeed + delta.z) / hyp));
         } else {
             angle = 90 - (float) Math.toDegrees(Math.asin((zSpeed + delta.z) / hyp));
         }
 
+        // attempt to calculate the angle of  Y travel
         if ((ySpeed + delta.y) > 0) {
 
             yAngle = -(float) Math.toDegrees(Math.asin((ySpeed + delta.y) / hypY));
@@ -204,37 +203,27 @@ public class Predator {
 
         }
 
-
-
+        // adjust speeds based upon heading
         zSpeed = (float) Math.cos(Math.toRadians(angle)) * 0.005f;
         xSpeed = (float) Math.sin(Math.toRadians(angle)) * 0.005f;
+
+        //correct speed based upon angle
         ySpeed = (float) Math.sin(Math.toRadians(yAngle)) * 0.005f;
-
-
 
 
     }
 
+    //distance helper
     private float distance(Coord a, Coord b) {
         return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
     }
 
+    // collision helper
     private boolean collisionDetection(Coord a, Coord b, float threshold) {
         if (distance(a, b) < threshold) {
             return true;
         }
         return false;
-    }
-
-    public double getAngleFromPoint(double x1, double x2, double z1, double z2) {
-
-        if ((x2 > x1)) {
-            return (Math.atan2((x2 - x1), (z1 - z2)) * 180 / Math.PI);
-        } else if ((x2 < x1)) {
-            return 360 - (Math.atan2((x1 - x2), (z1 - z2)) * 180 / Math.PI);
-        }
-        return Math.atan2(0, 0);
-
     }
 
 
@@ -243,6 +232,8 @@ public class Predator {
         gl.glPushAttrib(GL2.GL_CURRENT_BIT);
         gl.glTranslated(coord.x, coord.y, coord.z);
 
+
+        // Attempt to use a rotation matrix for the y axis
 //        float deltaX = (float)(coordPrime.x - coord.x);
 //        float deltaZ = (float)(coordPrime.z - coord.z);
 //        float magnitude = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaZ, 2));
@@ -276,9 +267,8 @@ public class Predator {
 //        float[] matrix = {rotate[0], rotate[1], rotate[2], perpendicular[0], perpendicular[1], perpendicular[2], 0.0f, v[0],v[1], v[2], 0.0f,(float) coord.x, (float)coord.y, (float)coord.z, 1.0f};
 //        gl.glMultMatrixf(matrix, 0);
 
-
         gl.glRotatef(angle, 0.0f, 1.0f, 0.0f);
-        gl.glColor3f(1f, 0.0f, 0.0f); // Orange
+        gl.glColor3f(1f, 0.0f, 0.0f); // Red
         gl.glPushMatrix();
         gl.glCallList(body);
         gl.glPopMatrix();
@@ -295,6 +285,4 @@ public class Predator {
         gl.glPopAttrib();
         gl.glPopMatrix();
     }
-
-
 }

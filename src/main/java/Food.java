@@ -2,40 +2,23 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import java.util.Random;
+
+// Nicholas Goutermout
+// CS 680
+// PS3
+// 11/4
+
+// Class that controls a simple food object
+// floats to the bottom slowly if y axis is enabled
+
 
 public class Food {
-    //  private int fish_object;
     private float scale;
-    private float tailAngle;
-    private float tailDelta;
-    private float angle;
-    private float yAngle = -25.0f;
-
-    private float angleDelta = 0.5f;
     private int body;
-    private int tail;
-    private float z;
-    private float x;
-    private float y;
-    private float zAccel;
-    private float xAccel;
-    private float yAccel;
-    public float zSpeed = 0.005f;
-    public float xSpeed = 0.005f;
     public float ySpeed = -0.001f;
-    public boolean xCol = false;
-    public boolean zCol = false;
-    public boolean yCol = false;
+
+    // this is enabled as a user presses the F key
     public boolean eaten = true;
-
-
-    private float rotationAngle;
-    boolean collision = false;
-
-    private float rotation = 0.0f;
-    private float speed = 0.0f;
-    private Random random = new Random(42);
     public Coord coord;
 
 
@@ -62,33 +45,32 @@ public class Food {
     public void update(GL gl) {
 
 
-        Coord delta = new Coord();
-        Coord change = new Coord();
+        // shark destroys the food on touch
         if (collisionDetection(coord, Vivarium.predator.coord, 0.2f)) {
             eaten = true;
         }
+
+        // when it get eaten by a fish it disappears
         for (SmallFry smallFry : Vivarium.smallFries) {
             if (collisionDetection(coord, smallFry.coord, .1f)) {
                 eaten = true;
             }
         }
 
+        // control the sinking so it doesnt go through the bottom
         if ((coord.y + ySpeed) <= -1.8 || (coord.y + ySpeed) >= 1.8) {
-            collision = true;
             ySpeed = 0;
         }
 
-
-//        coord.y += ySpeed;
-
-
-
     }
 
+
+    //distance helper
     private float distance(Coord a, Coord b) {
         return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
     }
 
+    //collision helper
     private boolean collisionDetection(Coord a, Coord b, float threshold) {
         if (distance(a, b) < threshold) {
             return true;
@@ -97,13 +79,11 @@ public class Food {
     }
 
 
-
-
     public void draw(GL2 gl) {
         gl.glPushMatrix();
         gl.glPushAttrib(GL2.GL_CURRENT_BIT);
         gl.glTranslated(coord.x, coord.y, coord.z);
-        gl.glColor3f(0, 1, 0);
+        gl.glColor3f(0, 1, 0); // green
         gl.glPushMatrix();
         gl.glCallList(body);
         gl.glPopMatrix();
