@@ -15,6 +15,13 @@ import java.util.Random;
 // create a small fish object that will flock to other fish
 // should also avoid the predator
 // will chase down food
+// INPUTS : float scale_, float x, float y, float z
+// float scale  - Scale of the food
+// float x  - starting x location
+// float y - starting y location
+// float z - starting z location
+// OUTPUTS: None
+// this class is sued to create a smallfry object for use in the vivarium class
 public class SmallFry {
 
     private float scale;

@@ -11,6 +11,13 @@ import javax.media.opengl.GL2;
 // Creates and manages a simple predator class that chases small fries
 // call init, most inputs are taken care of in base code
 // draw and update is controlled in the Vivarium class
+// INPUTS : float scale_, float x, float y, float z
+// float scale  - Scale of the fish
+// float x  - starting x location
+// float y - starting y location
+// float z - starting z location
+// OUTPUTS: None
+// this class is sued to create a predator object for use in the vivarium class
 public class Predator {
 
     private float scale;

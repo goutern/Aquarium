@@ -10,7 +10,13 @@ import javax.media.opengl.GL2;
 
 // Class that controls a simple food object
 // floats to the bottom slowly if y axis is enabled
-
+// INPUTS : float scale_, float x, float y, float z
+// float scale  - Scale of the food
+// float x  - starting x location
+// float y - starting y location
+// float z - starting z location
+// OUTPUTS: None
+// this class is sued to create a food object for use in the vivarium class
 
 public class Food {
     private float scale;
