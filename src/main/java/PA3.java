@@ -197,7 +197,7 @@ private GLUT glut;
                    break;
         case 'F' :
         case 'f' :
-//          Vivarium.addFood();
+          Vivarium.addFood();
           break;
         default :
           break;

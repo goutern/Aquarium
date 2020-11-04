@@ -27,7 +27,7 @@ public class Food {
     public boolean xCol = false;
     public boolean zCol = false;
     public boolean yCol = false;
-    public boolean eaten = false;
+    public boolean eaten = true;
 
 
     private float rotationAngle;
